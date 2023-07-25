@@ -4,7 +4,6 @@ import {
   DataTableHeader,
   DataTableSkeleton,
   DefinitionTooltip,
-  Dropdown,
   Layer,
   Pagination,
   Tab,
@@ -255,7 +254,9 @@ function ActiveVisitsTable() {
             <div className={styles.headerBtnContainer}></div>
             <div className={styles.headerContainer}>
               <div className={!isDesktop(layout) ? styles.tabletHeading : styles.desktopHeading}>
-                <h4>{`Currently in ${currentQueueRoomLocationName ?? queueRoomLocations?.[0]?.display} queue`}</h4>
+                <span className={styles.heading}>{`Patients in ${
+                  currentQueueRoomLocationName ?? queueRoomLocations?.[0]?.display
+                } queue`}</span>
               </div>
 
               <UserHasAccess privilege="App: checkin.button">
@@ -299,7 +300,7 @@ function ActiveVisitsTable() {
                 style={{ position: 'static', height: '3rem', overflow: 'visible', backgroundColor: 'color' }}
               >
                 <TableToolbarContent className={styles.toolbarContent}>
-                  <div className={styles.filterContainer}>
+                  {/* <div className={styles.filterContainer}>
                     <Dropdown
                       id="queuelocationFilter"
                       titleText={t('showPatientsWaitingFor', 'Show patients waiting for') + ':'}
@@ -310,7 +311,7 @@ function ActiveVisitsTable() {
                       onChange={handleQueueRoomLocationChange}
                       size="sm"
                     />
-                  </div>
+                  </div> */}
                   <Layer>
                     <TableToolbarSearch
                       className={styles.search}
@@ -426,7 +427,9 @@ function ActiveVisitsTable() {
         <>
           <div className={styles.headerContainer}>
             <div className={!isDesktop(layout) ? styles.tabletHeading : styles.desktopHeading}>
-              <h4>{`Currently in ${currentQueueRoomLocationName} queue`}</h4>
+              <span className={styles.heading}>{`Patients in ${
+                currentQueueRoomLocationName ?? queueRoomLocations?.[0]?.display
+              } queue`}</span>{' '}
             </div>
             <UserHasAccess privilege="App: checkin.button">
               <div className={styles.headerButtons}>
