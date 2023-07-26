@@ -31,7 +31,6 @@ import { Add } from '@carbon/react/icons';
 import {
   ConfigObject,
   ExtensionSlot,
-  UserHasAccess,
   interpolateUrl,
   isDesktop,
   navigate,
@@ -39,9 +38,11 @@ import {
   useLayoutType,
   usePagination,
   useSession,
+  userHasAccess,
 } from '@openmrs/esm-framework';
 import React, { AnchorHTMLAttributes, MouseEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PRIVILEGE_CHECKIN_BUTTON } from '../constants';
 import { buildStatusString, formatWaitTime, getTagColor, getTagType, trimVisitNumber } from '../helpers/functions';
 import {
   updateSelectedQueueRoomLocationName,
@@ -258,8 +259,7 @@ function ActiveVisitsTable() {
                   currentQueueRoomLocationName ?? queueRoomLocations?.[0]?.display
                 } queue`}</span>
               </div>
-
-              <UserHasAccess privilege="App: checkin.button">
+              {userHasAccess(PRIVILEGE_CHECKIN_BUTTON, session.user) && (
                 <div className={styles.headerButtons}>
                   <ExtensionSlot
                     extensionSlotName="patient-search-button-slot"
@@ -280,7 +280,7 @@ function ActiveVisitsTable() {
                     }}
                   />
                 </div>
-              </UserHasAccess>
+              )}
             </div>
           </>
         ) : null}
@@ -431,13 +431,13 @@ function ActiveVisitsTable() {
                 currentQueueRoomLocationName ?? queueRoomLocations?.[0]?.display
               } queue`}</span>{' '}
             </div>
-            <UserHasAccess privilege="App: checkin.button">
+            {userHasAccess(PRIVILEGE_CHECKIN_BUTTON, session.user) && (
               <div className={styles.headerButtons}>
                 <ExtensionSlot
                   extensionSlotName="patient-search-button-slot"
                   state={{
-                    buttonText: t('checkIn', 'Check In'),
-                    overlayHeader: t('checkIn', 'Check In'),
+                    buttonText: t('checkIn', 'CheckIn'),
+                    overlayHeader: t('checkIn', 'CheckIn'),
                     buttonProps: {
                       kind: 'secondary',
                       renderIcon: (props) => <Add size={16} {...props} />,
@@ -445,40 +445,42 @@ function ActiveVisitsTable() {
                     },
                     selectPatientAction: (selectedPatientUuid) => {
                       setShowOverlay(true);
-                      setView(SearchTypes.SCHEDULED_VISITS);
+                      setView(SearchTypes.VISIT_FORM);
                       setViewState({ selectedPatientUuid });
                       setOverlayTitle(t('checkIn', 'Check In'));
                     },
                   }}
                 />
               </div>
-            </UserHasAccess>
+            )}
           </div>
         </>
       ) : null}
       <div className={styles.tileContainer}>
         <Tile className={styles.tile}>
           <p className={styles.content}>{t('noPatientsToDisplay', 'No patients to display')}</p>
-          <UserHasAccess privilege="App: checkin.button">
-            <ExtensionSlot
-              extensionSlotName="patient-search-button-slot"
-              state={{
-                buttonText: t('checkIn', 'Check In'),
-                overlayHeader: t('checkIn', 'Check In'),
-                buttonProps: {
-                  kind: 'ghost',
-                  renderIcon: (props) => <Add size={16} {...props} />,
-                  size: 'sm',
-                },
-                selectPatientAction: (selectedPatientUuid) => {
-                  setShowOverlay(true);
-                  setView(SearchTypes.SCHEDULED_VISITS);
-                  setViewState({ selectedPatientUuid });
-                  setOverlayTitle(t('checkIn', 'Check In'));
-                },
-              }}
-            />
-          </UserHasAccess>
+          {userHasAccess(PRIVILEGE_CHECKIN_BUTTON, session.user) && (
+            <div className={styles.headerButtons}>
+              <ExtensionSlot
+                extensionSlotName="patient-search-button-slot"
+                state={{
+                  buttonText: t('checkIn', 'CheckIn'),
+                  overlayHeader: t('checkIn', 'CheckIn'),
+                  buttonProps: {
+                    kind: 'secondary',
+                    renderIcon: (props) => <Add size={16} {...props} />,
+                    size: 'sm',
+                  },
+                  selectPatientAction: (selectedPatientUuid) => {
+                    setShowOverlay(true);
+                    setView(SearchTypes.VISIT_FORM);
+                    setViewState({ selectedPatientUuid });
+                    setOverlayTitle(t('checkIn', 'Check In'));
+                  },
+                }}
+              />
+            </div>
+          )}
         </Tile>
       </div>
       {showOverlay && (
