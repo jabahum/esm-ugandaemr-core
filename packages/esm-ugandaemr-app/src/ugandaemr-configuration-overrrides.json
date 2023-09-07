@@ -13,7 +13,7 @@
       ]
     }
   },
-  "@ugandaemr/esm-laboratory-app": {
+  "@ugandaemr/openmrs-esm-laboratory-app": {
     "Display conditions": {
       "privileges": [
         "Manage Laboratory"
@@ -41,7 +41,7 @@
       ]
     }
   },
-  "@ugandaemr/esm-ipd-app": {
+  "@ugandaemr/esm-inpatient-app": {
     "Display conditions": {
       "privileges": [
         "Manage IPD"
@@ -160,7 +160,7 @@
   },
   "@openmrs/esm-patient-registration-app": {
     "logo": {
-      "src": "assets/logo.svg",
+      "src": "/openmrs/spa/logo.svg",
       "alt": "logo"
     },
     "Display conditions": {
@@ -214,13 +214,13 @@
   },
   "@ugandaemr/esm-login-app": {
     "logo": {
-      "src": "assets/logo.svg",
+      "src": "/openmrs/spa/logo.svg",
       "alt": "logo"
     }
   },
   "@openmrs/esm-primary-navigation-app": {
     "logo": {
-      "src": "assets/logo.svg",
+      "src": "/openmrs/spa/logo.svg",
       "alt": "logo"
     }
   }
