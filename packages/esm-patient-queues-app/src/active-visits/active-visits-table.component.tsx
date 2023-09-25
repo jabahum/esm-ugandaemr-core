@@ -59,7 +59,7 @@ import StatusIcon from '../queue-entry-table-components/status-icon.component';
 import { SearchTypes } from '../types';
 import { getOriginFromPathName } from './active-visits-table.resource';
 import styles from './active-visits-table.scss';
-import { usePatientQueuesList } from './patient-queues.resource';
+import { useParentLocation, usePatientQueuesList } from './patient-queues.resource';
 
 type FilterProps = {
   rowIds: Array<string>;
@@ -101,10 +101,9 @@ function ActiveVisitsTable() {
   const currentQueueRoomLocationUuid = useSelectedQueueRoomLocationUuid();
   const currentQueueRoomLocationName = useSelectedQueueRoomLocationName();
 
-  const { patientQueueEntries, isLoading } = usePatientQueuesList(
-    currentQueueRoomLocationUuid,
-    currentQueueLocationUuid,
-  );
+  const { location, isLoading: loading } = useParentLocation(currentQueueLocationUuid);
+
+  const { patientQueueEntries, isLoading } = usePatientQueuesList(location.results.parentLocation.uuid);
 
   const [showOverlay, setShowOverlay] = useState(false);
   const [view, setView] = useState('');
