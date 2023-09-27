@@ -294,7 +294,7 @@ const ChangeStatus: React.FC<ChangeStatusDialogProps> = ({ queueEntry, currentEn
               <hr />
               <br></br>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <h4 className={styles.section}> Currently Serving :</h4>
+                <h4 className={styles.section}> Queue to next service area :</h4>
                 <div style={{ margin: '10px' }}>
                   <ArrowUp size={20} />
                 </div>
