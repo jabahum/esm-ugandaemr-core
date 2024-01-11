@@ -5,7 +5,7 @@ import { Tag, Tooltip } from '@carbon/react';
 import { styles } from './patient-chart-link.scss';
 import { getGender, getTagType } from '../helpers/functions';
 import { EditQueueEntry } from '../queue-entry/edit-queue-entry.component';
-import { useVisitQueueEntry } from '../queue-entry/queue.resource';
+import { usePatientQueueEntry } from '../active-visits/patient-queues.resource';
 
 interface PatientInfoProps {
   patient: fhir.Patient;
@@ -19,7 +19,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ patient }) => {
   const patientUuid = `${patient?.id}`;
   const { currentVisit } = useVisit(patientUuid);
   const patientNameIsTooLong = !isTablet && name.trim().length > 25;
-  const { queueEntry } = useVisitQueueEntry(patientUuid, currentVisit?.uuid);
+  const { queueEntry } = usePatientQueueEntry(patientUuid, currentVisit?.uuid);
 
   const visitType = queueEntry?.visitType ?? '';
   const priority = queueEntry?.priority ?? '';

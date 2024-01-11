@@ -85,6 +85,14 @@ export interface ChildLocation {
   links: Link[];
 }
 
+interface UsePatientQueueEntries {
+  queueEntry: MappedPatientQueueEntry | null;
+  isLoading: boolean;
+  isError: Error;
+  isValidating?: boolean;
+  mutate: () => void;
+}
+
 export function usePatientQueuesList(currentQueueLocationUuid: string, status: string) {
   const apiUrl = `/ws/rest/v1/patientqueue?v=full&status=${status}&room=${currentQueueLocationUuid}`;
   return usePatientQueueRequest(apiUrl);
@@ -130,6 +138,44 @@ export function usePatientQueueRequest(apiUrl: string) {
   return {
     patientQueueEntries: mapppedQueues || [],
     patientQueueCount: mapppedQueues?.length,
+    isLoading,
+    isError: error,
+    isValidating,
+    mutate,
+  };
+}
+
+// get patient queue entry
+export function usePatientQueueEntry(patientUuid, visitUuid): UsePatientQueueEntries {
+  const apiUrl = `/ws/rest/v1/visit-queue-entry?patient=${patientUuid}`;
+  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientQueue> } }, Error>(
+    apiUrl,
+    openmrsFetch,
+  );
+
+  const mapPatientQueueEntryProperties = (patientQueueEntry: PatientQueue): MappedPatientQueueEntry => ({
+    id: patientQueueEntry.uuid,
+    name: patientQueueEntry.queue.display,
+    patientUuid: patientQueueEntry.patient.uuid,
+    priority: patientQueueEntry.priority.display === 'Urgent' ? 'Priority' : patientQueueEntry.priority.display,
+    priorityUuid: patientQueueEntry.priority.uuid,
+    service: patientQueueEntry.queue?.display,
+    status: patientQueueEntry.status.display,
+    statusUuid: patientQueueEntry.status.uuid,
+    visitUuid: patientQueueEntry.visit?.uuid,
+    visitType: patientQueueEntry.visit?.visitType?.display,
+    queueUuid: patientQueueEntry.queueEntry.queue.uuid,
+    queueEntryUuid: patientQueueEntry.queueEntry.uuid,
+  });
+
+  const mappedPatientQueueEntry =
+    data?.data?.results
+      ?.map(mapPatientQueueEntryProperties)
+      .filter((patientQueueEntry) => visitUuid !== undefined && visitUuid === patientQueueEntry.visitUuid)
+      .shift() ?? null;
+
+  return {
+    queueEntry: mappedPatientQueueEntry,
     isLoading,
     isError: error,
     isValidating,
