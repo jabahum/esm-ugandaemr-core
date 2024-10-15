@@ -38,6 +38,7 @@ import NotesActionsMenu from './notes-action-menu.components';
 import { PRIVILEGE_ENABLE_EDIT_DEMOGRAPHICS } from '../constants';
 import PatientSearch from '../patient-search/patient-search.component';
 import { QueueStatus } from '../utils/utils';
+import { Toggle } from '@carbon/react';
 
 interface ActiveVisitsTableProps {
   status: string;
@@ -225,9 +226,9 @@ const ActiveVisitsTable: React.FC<ActiveVisitsTableProps> = ({ status }) => {
       >
         {({ rows, headers, getHeaderProps, getTableProps, getRowProps }) => (
           <TableContainer className={styles.tableContainer}>
-            <TableToolbar style={{ position: 'static', height: '3rem', overflow: 'visible', backgroundColor: 'color' }}>
+            <TableToolbar style={{ position: 'absolute', height: '3rem', overflow: 'visible', backgroundColor: 'color' }}>
               <TableToolbarContent className={styles.toolbarContent}>
-                <Layer>
+                <Layer className={styles.tableFilter}>
                   <TableToolbarSearch
                     expanded
                     className={styles.search}
@@ -235,6 +236,7 @@ const ActiveVisitsTable: React.FC<ActiveVisitsTableProps> = ({ status }) => {
                     placeholder={t('searchThisList', 'Search this list')}
                     size="sm"
                   />
+                  <Toggle className={styles.toggle} />
                 </Layer>
               </TableToolbarContent>
             </TableToolbar>
