@@ -15,6 +15,7 @@ import {
   TableToolbarSearch,
   Tag,
   Tile,
+  Toggle,
 } from '@carbon/react';
 
 import { isDesktop, useLayoutType, usePagination, userHasAccess, useSession } from '@openmrs/esm-framework';
@@ -38,7 +39,6 @@ import NotesActionsMenu from './notes-action-menu.components';
 import { PRIVILEGE_ENABLE_EDIT_DEMOGRAPHICS } from '../constants';
 import PatientSearch from '../patient-search/patient-search.component';
 import { QueueStatus } from '../utils/utils';
-import { Toggle } from '@carbon/react';
 
 interface ActiveVisitsTableProps {
   status: string;
@@ -226,7 +226,9 @@ const ActiveVisitsTable: React.FC<ActiveVisitsTableProps> = ({ status }) => {
       >
         {({ rows, headers, getHeaderProps, getTableProps, getRowProps }) => (
           <TableContainer className={styles.tableContainer}>
-            <TableToolbar style={{ position: 'absolute', height: '3rem', overflow: 'visible', backgroundColor: 'color' }}>
+            <TableToolbar
+              style={{ position: 'absolute', height: '3rem', overflow: 'visible', backgroundColor: 'color' }}
+            >
               <TableToolbarContent className={styles.toolbarContent}>
                 <Layer className={styles.tableFilter}>
                   <TableToolbarSearch
